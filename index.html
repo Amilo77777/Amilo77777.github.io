@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Калькулятор грузоперевозок | Омега Холдинг</title>
+    <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=tBey6GW-APSzJmurrTpsaKVEUZqkmjtxogyIiyGohUazKDt8_xHF1q_dASqo5DOG7K1y-MDyz7iKzj_ddIApjL1OZBllHNn8dwLp-HyTMk5z5a6rK3eBpnyx-fwdsjmzTk9eGcqQF_e1oCLZ8mnJVSbwNHu2-TjGgSnh4Bdm0xHY_gRyzEWaBkUyVQeuarkw8XpeQSW8Aouipp6rZNVC4nSSRWWq4IUoJlO_Btj8iVVWKp2Jf-caXYESqu_JH-bMtPW4nXxP5Tm84h0phvrwuudgd8k2A4gXwX6lzThs0hN8FoNveEGanrp0vrb476GbAtaZvwe14h_Jr2u6PHSCMw" charset="UTF-8"></script><style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #eef2f7 0%, #d9e0e8 100%);
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            padding: 2rem 1rem;
+            color: #1e2f3c;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .company-card {
+            background: #ffffffcc;
+            backdrop-filter: blur(8px);
+            border-radius: 2rem;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255,255,255,0.7);
+        }
+
+        .company-name {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(145deg, #1f5e8e, #0d3b55);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .company-tagline {
+            color: #2c607f;
+            margin-top: 0.5rem;
+            border-left: 4px solid #f5b042;
+            padding-left: 1rem;
+            font-weight: 500;
+        }
+
+        .direction-switch {
+            background: #eef3fc;
+            border-radius: 60px;
+            display: inline-flex;
+            padding: 0.3rem;
+            margin-bottom: 2rem;
+            box-shadow: inset 0 1px 2px #00000010, 0 2px 5px #ffffffb3;
+        }
+
+        .dir-btn {
+            border: none;
+            background: transparent;
+            padding: 0.7rem 1.8rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #1f5e8e;
+        }
+
+        .dir-btn.active {
+            background: #1f5e8e;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2rem;
+        }
+
+        .form-panel, .result-panel {
+            background: white;
+            border-radius: 2rem;
+            padding: 1.6rem;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.15);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1.2rem;
+            color: #0d3b55;
+            border-left: 5px solid #f5b042;
+            padding-left: 0.8rem;
+        }
+
+        .form-row {
+            margin-bottom: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-row label {
+            width: 200px;
+            font-weight: 600;
+            color: #1f5e8e;
+        }
+
+        select, input {
+            flex: 1;
+            min-width: 180px;
+            padding: 0.6rem 1rem;
+            border-radius: 48px;
+            border: 1px solid #cbdbe6;
+            background: #fefefe;
+            font-size: 0.9rem;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #f5b042;
+            box-shadow: 0 0 0 3px rgba(245,176,66,0.2);
+        }
+
+        .cargo-fields {
+            margin-top: 1rem;
+            padding-top: 0.5rem;
+            border-top: 1px dashed #cbdbe6;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin: 1rem 0;
+        }
+
+        .checkbox-row input {
+            width: 1.2rem;
+            height: 1.2rem;
+            flex: 0 0 auto;
+        }
+
+        button.calc-btn {
+            background: #f5b042;
+            border: none;
+            width: 100%;
+            padding: 0.9rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 60px;
+            margin-top: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #1e2f3c;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        button.calc-btn:hover {
+            background: #e5a02e;
+            transform: scale(0.98);
+        }
+
+        .result-card {
+            background: #f8fafd;
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .result-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 1.1rem;
+        }
+
+        .result-line.total {
+            border-bottom: none;
+            margin-top: 0.5rem;
+            font-weight: 800;
+            font-size: 1.6rem;
+            color: #1f5e8e;
+            background: #eef3fc;
+            padding: 0.8rem 1rem;
+            border-radius: 1rem;
+        }
+
+        .contact-block {
+            background: #fef5e8;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 0.95rem;
+            border-left: 4px solid #f5b042;
+            display: none;
+        }
+        .contact-block.show {
+            display: block;
+        }
+        .contact-block p {
+            margin: 0.4rem 0;
+            font-weight: 500;
+        }
+
+        .note {
+            font-size: 0.7rem;
+            color: #5f7d9c;
+            text-align: center;
+            margin-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 0.8rem;
+        }
+
+        @media (max-width: 780px) {
+            .form-row label {
+                width: 100%;
+            }
+            .direction-switch {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="company-card">
+        <div class="company-name">Группа компаний "Омега Холдинг"</div>
+        <div class="company-tagline">Международные грузоперевозки Китай – Россия | Полный цикл, таможня, доставка до двери</div>
+        <div style="margin-top: 0.6rem; font-size:0.85rem;">📍 Работаем через Хэйхэ/Благовещенск и Маньчжурию/Забайкальск</div>
+    </div>
+
+    <div class="direction-switch" id="directionSwitch">
+        <button class="dir-btn active" data-dir="blg">🚚 Хэйхэ / Благовещенск</button>
+        <button class="dir-btn" data-dir="mnch">🚛 Маньчжурия / Забайкальск</button>
+    </div>
+
+    <div class="calc-grid">
+        <!-- левая панель -->
+        <div class="form-panel">
+            <h3>📦 Параметры перевозки</h3>
+            <form id="calcForm">
+                <div id="cargoTypeWrapper" class="form-row">
+                    <label>Тип перевозки</label>
+                    <select id="cargoType">
+                        <option value="auto_collect">Автосборка</option>
+                        <option value="dedicated">Выделенное авто</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <label>Город отправления (Китай)</label>
+                    <select id="originCity"></select>
+                </div>
+
+                <div class="form-row">
+                    <label>Город назначения (РФ)</label>
+                    <select id="destCity"></select>
+                </div>
+
+                <!-- Блок характеристик груза (только для БЛГ и автосборка) -->
+                <div id="cargoFieldsBlock" class="cargo-fields">
+                    <div class="form-row">
+                        <label>Объём (м³)</label>
+                        <input type="number" id="volume" step="0.1" value="5">
+                    </div>
+                    <div class="form-row">
+                        <label>Вес (кг)</label>
+                        <input type="number" id="weight" step="100" value="1000">
+                    </div>
+                    <div class="form-row">
+                        <label>Макс. длина груза (м)</label>
+                        <input type="number" id="maxLength" step="0.1" value="0">
+                    </div>
+                    <div class="form-row">
+                        <label>Макс. ширина груза (м)</label>
+                        <input type="number" id="maxWidth" step="0.1" value="0">
+                    </div>
+                    <div class="form-row">
+                        <label>Длина по полу (м)</label>
+                        <input type="number" id="floorLength" step="0.5" value="0">
+                    </div>
+                </div>
+
+                <!-- Количество паллет (видимо всегда) -->
+                <div class="form-row">
+                    <label>Количество паллет (шт)</label>
+                    <input type="number" id="palletsCount" step="1" value="0">
+                </div>
+
+                <div class="checkbox-row">
+                    <input type="checkbox" id="palletizingCheckbox">
+                    <label for="palletizingCheckbox" style="width: auto;">➕ Добавить паллетирование (1 паллета = 2 250 ₽)</label>
+                </div>
+
+                <div class="form-row">
+                    <label>Доп. пакеты документов</label>
+                    <input type="number" id="extraDocs" step="1" value="0">
+                </div>
+
+                <div class="form-row">
+                    <label>Объявленная стоимость груза (₽)</label>
+                    <input type="number" id="cargoValue" step="1000" value="0">
+                </div>
+
+                <button type="button" class="calc-btn" id="discountBtn">🎁 ПОЛУЧИТЬ СКИДКУ</button>
+            </form>
+            <div class="note">
+                * Паллетирование добавляется по желанию (цена за 1 паллету). При активации чекбокса для автосборки автоматически подставится рекомендуемое кол-во паллет (Объём/1.6 м³).<br>
+                Страхование 0,04% от объявленной стоимости груза включается в итог.<br>
+                Адресная доставка уже включена в ставку по РФ.
+            </div>
+        </div>
+
+        <!-- Правая панель: результаты -->
+        <div class="result-panel">
+            <h3>💵 Итоговая стоимость</h3>
+            <div id="resultArea">
+                <div class="result-card">
+                    <div class="result-line"><span>🇨🇳 Ставка по Китаю (до границы):</span><span id="chinaRate">—</span></div>
+                    <div class="result-line"><span>🇷🇺 Ставка по РФ (после границы):</span><span id="rfRate">—</span></div>
+                    <div class="result-line"><span>📄 Доп. пакеты документов:</span><span id="docsCost">0 ₽</span></div>
+                    <div class="result-line"><span>📦 Паллетирование (вкл. по желанию):</span><span id="palletCost">0 ₽</span></div>
+                    <div class="result-line"><span>🛡️ Страхование (0.04% от стоимости):</span><span id="insuranceCost">0 ₽</span></div>
+                    <div class="result-line total"><span>ИТОГО К ОПЛАТЕ:</span><span id="totalCost">0 ₽</span></div>
+                </div>
+                <div class="result-card">
+                    <div class="result-line"><span>🏭 Плановые расходы СВХ (ориентир):</span><span id="svhCost">0 ₽</span></div>
+                </div>
+            </div>
+            <div id="contactBlock" class="contact-block">
+                <p>📩 Email: ROP@HOLDING-OMEGA.COM</p>
+                <p>📞 Телефон: +7 (952) 743-62-24</p>
+                <p>📱 Telegram: @AMILOMAX</p>
+                <p>🌐 Сайт: HOLDING-OMEGA.COM</p>
+            </div>
+            <div class="note">✔️ Ставки включают: забор груза, экспортную декларацию, хранение в Китае, доставку до адреса. СВХ оплачивается отдельно.</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --------------------------------------------------------------
+    // ОБНОВЛЁННЫЕ ПРАЙСЫ
+    // --------------------------------------------------------------
+
+    // Благовещенск
+    const priceChinaBlg = {
+        "Хэйхэ": 244000, "Харбин": 306400, "Чанчунь": 318400, "Шэньян": 331600,
+        "Далянь": 391600, "Пекин": 348400, "Тяньцзинь": 385600, "Циндао": 378400,
+        "Цзинань": 388000, "Шицзячжуан": 389200, "Тайюань": 448000, "Нанкин": 418000,
+        "Шанхай": 431200, "Ухань": 424000, "Ханчжоу": 472000, "Вэньчжоу": 460000,
+        "Нинбо": 420400, "Сиань": 442000, "Наньчан": 457600, "Чэнду": 490000,
+        "Сямэнь": 466000, "Чунцин": 449200, "Гуаньчжоу": 474400
+    };
+
+    // Маньчжурия
+    const priceChinaMnchRaw = {
+        "Manzhouli (Маньчжурия)": 202100,
+        "Harbin (Харбин)": 240500,
+        "Changchun (Чанчунь)": 250100,
+        "Shenyang (Шэньян)": 252500,
+        "Jinan (Цзинань)": 280100,
+        "Dalian (Далянь)": 286100,
+        "Beijing (Пекин)": 310100,
+        "Tianjin (Тяньцзинь)": 310100,
+        "Qingdao (Циндао)": 316100,
+        "Nanking (Нанкин)": 328100,
+        "Taiyuan (Тайюань)": 328100,
+        "Xian (Сиань)": 328100,
+        "Tengzhou": 328100,
+        "Hangzhou (Ханчжоу)": 334100,
+        "Chemgdu (Чэнду)": 346100,
+        "Shanghai (Шанхай)": 352100,
+        "Suzhou": 353420,
+        "Chongqing (Чунцин)": 358100,
+        "Wenzhou (Вэньчжоу)": 358100,
+        "Wuhan (Ухань)": 358100,
+        "Xiamen (Сямынь)": 358100,
+        "Ningbo (Нинбо)": 370100,
+        "Guangzhou (Гуанчжоу)": 406100
+    };
+    const chinaMnchCities = Object.entries(priceChinaMnchRaw).map(([key, value]) => {
+        let display = key;
+        const match = key.match(/\(([^)]+)\)/);
+        if (match) display = match[1];
+        else display = key;
+        return { display, key, value };
+    });
+
+    // РФ для Благовещенска
+    const priceRfBlg = {
+        "Благовещенск": 140000, "Хабаровск": 240000, "Свободный": 205000, "Комсомольск-на-Амуре": 240000,
+        "Иркутск": 390000, "Красноярск": 505000, "Кемерово": 490000, "Усть-Кут": 540000,
+        "Омск": 520000, "Тюмень": 540000, "Екатеринбург": 570000, "Челябинск": 570000,
+        "Пермь": 570000, "Казань": 620000, "Самара": 620000, "Тольятти": 620000,
+        "Уфа": 620000, "Набережные Челны": 620000, "Саратов": 620000, "Ульяновск": 670000,
+        "Ижевск": 670000, "Москва": 670000, "Санкт-Петербург": 690000
+    };
+    const addressBlg = {
+        "Благовещенск": 10000, "Хабаровск": 50000, "Свободный": 10000, "Комсомольск-на-Амуре": 100000,
+        "Иркутск": 20000, "Красноярск": 20000, "Кемерово": 20000, "Усть-Кут": 10000,
+        "Омск": 20000, "Тюмень": 10000, "Екатеринбург": 10000, "Челябинск": 10000,
+        "Пермь": 15000, "Казань": 10000, "Самара": 20000, "Тольятти": 25000,
+        "Уфа": 30000, "Набережные Челны": 30000, "Саратов": 30000, "Ульяновск": 30000,
+        "Ижевск": 35000, "Москва": 30000, "Санкт-Петербург": 30000
+    };
+
+    // РФ для Маньчжурии
+    const priceRfMnch = {
+        "Забайкальск": 215000, "Иркутск": 270000, "Красноярск": 340000, "Кемерово": 400000,
+        "Омск": 470000, "Тюмень": 490000, "Екатеринбург": 490000, "Челябинск": 490000,
+        "Пермь": 540000, "Уфа": 540000, "Казань": 540000, "Самара": 540000,
+        "Тольятти": 540000, "Набережные Челны": 540000, "Ульяновск": 590000, "Саратов": 590000,
+        "Нижний Новгород": 590000, "Москва": 640000, "Воронеж": 640000, "Санкт-Петербург": 640000
+    };
+    const addressMnch = {
+        "Забайкальск": 10000, "Иркутск": 10000, "Красноярск": 10000, "Кемерово": 10000,
+        "Омск": 10000, "Тюмень": 10000, "Екатеринбург": 10000, "Челябинск": 10000,
+        "Пермь": 20000, "Уфа": 20000, "Казань": 20000, "Самара": 20000,
+        "Тольятти": 20000, "Набережные Челны": 20000, "Ульяновск": 30000, "Саратов": 30000,
+        "Нижний Новгород": 30000, "Москва": 30000, "Воронеж": 30000, "Санкт-Петербург": 35000
+    };
+
+    let currentDir = "blg";
+
+    function getCitiesOrigin() {
+        if (currentDir === "blg") return Object.keys(priceChinaBlg);
+        else return chinaMnchCities.map(c => c.display);
+    }
+
+    function getCitiesDest() {
+        if (currentDir === "blg") return Object.keys(priceRfBlg);
+        else return Object.keys(priceRfMnch);
+    }
+
+    function getChinaRate(cityDisplay, dir) {
+        if (dir === "blg") return priceChinaBlg[cityDisplay] || 0;
+        else {
+            const found = chinaMnchCities.find(c => c.display === cityDisplay);
+            return found ? found.value : 0;
+        }
+    }
+
+    function getRfBase(city, dir) {
+        if (dir === "blg") return priceRfBlg[city] || 0;
+        else return priceRfMnch[city] || 0;
+    }
+    function getAddress(city, dir) {
+        if (dir === "blg") return addressBlg[city] || 0;
+        else return addressMnch[city] || 0;
+    }
+
+    function computeMaxCoef(volume, weight, maxLen, maxWidth, floorLen, dir) {
+        if (dir !== "blg") return 0;
+        const volCoef = volume / 75;
+        const weightCoef = weight / 20000;
+        let lenCoef = (maxLen > 0) ? (0.084 * maxLen / 2) : 0;
+        let widthCoef = (maxWidth > 1.2) ? (lenCoef * 2) : 0;
+        const floorCoef = floorLen / 13;
+        const values = [volCoef, weightCoef, lenCoef, widthCoef, floorCoef];
+        return Math.max(...values, 0);
+    }
+
+    function getRecommendedPallets(volume) {
+        if (!volume || volume <= 0) return 0;
+        return Math.ceil(volume / 1.6);
+    }
+
+    function toggleCargoFields() {
+        if (currentDir === "mnch") {
+            document.getElementById('cargoFieldsBlock').classList.add('hidden');
+            return;
+        }
+        const cargoType = document.getElementById('cargoType').value;
+        const cargoFields = document.getElementById('cargoFieldsBlock');
+        if (cargoType === 'dedicated') {
+            cargoFields.classList.add('hidden');
+        } else {
+            cargoFields.classList.remove('hidden');
+        }
+    }
+
+    function handlePalletizingCheckbox() {
+        const checkbox = document.getElementById('palletizingCheckbox');
+        const palletsInput = document.getElementById('palletsCount');
+        if (checkbox.checked) {
+            let currentPallets = parseFloat(palletsInput.value) || 0;
+            if (currentPallets === 0 && currentDir === "blg") {
+                const cargoType = document.getElementById('cargoType').value;
+                if (cargoType === 'auto_collect') {
+                    const volume = parseFloat(document.getElementById('volume').value) || 0;
+                    if (volume > 0) {
+                        palletsInput.value = getRecommendedPallets(volume);
+                    }
+                }
+            }
+        }
+        calculate();
+    }
+
+    function calculate() {
+        const cargoType = document.getElementById('cargoType').value;
+        const originCityDisplay = document.getElementById('originCity').value;
+        const destCity = document.getElementById('destCity').value;
+        const extraDocs = parseFloat(document.getElementById('extraDocs').value) || 0;
+        const palletCheck = document.getElementById('palletizingCheckbox').checked;
+        let palletsQty = parseFloat(document.getElementById('palletsCount').value) || 0;
+        const cargoValue = parseFloat(document.getElementById('cargoValue').value) || 0;
+
+        let volume = 0, weight = 0, maxLength = 0, maxWidth = 0, floorLength = 0;
+        if (currentDir === "blg") {
+            volume = parseFloat(document.getElementById('volume').value) || 0;
+            weight = parseFloat(document.getElementById('weight').value) || 0;
+            maxLength = parseFloat(document.getElementById('maxLength').value) || 0;
+            maxWidth = parseFloat(document.getElementById('maxWidth').value) || 0;
+            floorLength = parseFloat(document.getElementById('floorLength').value) || 0;
+        }
+
+        let calcCoef = 1;
+        if (currentDir === "mnch") {
+            calcCoef = 1;
+        } else {
+            if (cargoType === "dedicated") {
+                calcCoef = 1;
+            } else {
+                const maxRaw = computeMaxCoef(volume, weight, maxLength, maxWidth, floorLength, currentDir);
+                calcCoef = maxRaw * 1.2;
+            }
+        }
+
+        const chinaBase = getChinaRate(originCityDisplay, currentDir);
+        // ------------------- ИЗМЕНЕНИЕ: +10200 к ставке по Китаю -------------------
+        const chinaTotal = chinaBase * calcCoef + 10200;
+
+        const rfBase = getRfBase(destCity, currentDir);
+        const address = getAddress(destCity, currentDir);
+        let rfTotal = rfBase * calcCoef;
+        if (rfTotal < 10000) rfTotal = 10000 + address;
+        else rfTotal = rfTotal + address;
+
+        const docsCost = extraDocs * 10200;
+        let palletCost = 0;
+        if (palletCheck && palletsQty > 0) {
+            palletCost = palletsQty * 2250;
+        }
+
+        const insurance = cargoValue * 0.0004;
+        let total = chinaTotal + rfTotal + docsCost + palletCost + insurance;
+        let svh = calcCoef * 30000;
+
+        document.getElementById('chinaRate').innerHTML = Math.round(chinaTotal).toLocaleString() + ' ₽';
+        document.getElementById('rfRate').innerHTML = Math.round(rfTotal).toLocaleString() + ' ₽';
+        document.getElementById('docsCost').innerHTML = Math.round(docsCost).toLocaleString() + ' ₽';
+        document.getElementById('palletCost').innerHTML = Math.round(palletCost).toLocaleString() + ' ₽';
+        document.getElementById('insuranceCost').innerHTML = Math.round(insurance).toLocaleString() + ' ₽';
+        document.getElementById('totalCost').innerHTML = Math.round(total).toLocaleString() + ' ₽';
+        document.getElementById('svhCost').innerHTML = Math.round(svh).toLocaleString() + ' ₽';
+    }
+
+    function updateUIForDirection() {
+        const cargoTypeWrapper = document.getElementById('cargoTypeWrapper');
+        const cargoFieldsBlock = document.getElementById('cargoFieldsBlock');
+        const cargoTypeSelect = document.getElementById('cargoType');
+
+        if (currentDir === "mnch") {
+            cargoTypeWrapper.classList.add('hidden');
+            cargoFieldsBlock.classList.add('hidden');
+        } else {
+            cargoTypeWrapper.classList.remove('hidden');
+            toggleCargoFields();
+        }
+
+        const originSelect = document.getElementById('originCity');
+        const destSelect = document.getElementById('destCity');
+        const oldOrigin = originSelect.value;
+        const oldDest = destSelect.value;
+
+        const origins = getCitiesOrigin();
+        const dests = getCitiesDest();
+
+        originSelect.innerHTML = '';
+        origins.forEach(city => {
+            const opt = document.createElement('option');
+            opt.value = city;
+            opt.textContent = city;
+            originSelect.appendChild(opt);
+        });
+        destSelect.innerHTML = '';
+        dests.forEach(city => {
+            const opt = document.createElement('option');
+            opt.value = city;
+            opt.textContent = city;
+            destSelect.appendChild(opt);
+        });
+
+        if (origins.includes(oldOrigin)) originSelect.value = oldOrigin;
+        else originSelect.value = origins[0];
+        if (dests.includes(oldDest)) destSelect.value = oldDest;
+        else destSelect.value = dests[0];
+
+        if (currentDir === "blg" && cargoTypeSelect.value !== "auto_collect" && cargoTypeSelect.value !== "dedicated")
+            cargoTypeSelect.value = "auto_collect";
+
+        calculate();
+    }
+
+    function setDirection(dir) {
+        currentDir = dir;
+        document.querySelectorAll('.dir-btn').forEach(btn => btn.classList.remove('active'));
+        if (dir === "blg") document.querySelector('.dir-btn[data-dir="blg"]').classList.add('active');
+        else document.querySelector('.dir-btn[data-dir="mnch"]').classList.add('active');
+        updateUIForDirection();
+    }
+
+    function showContacts() {
+        document.getElementById('contactBlock').classList.add('show');
+        document.getElementById('contactBlock').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    window.onload = () => {
+        updateUIForDirection();
+        document.querySelectorAll('.dir-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => setDirection(btn.getAttribute('data-dir')));
+        });
+        document.getElementById('discountBtn').addEventListener('click', showContacts);
+
+        const form = document.getElementById('calcForm');
+        const inputs = form.querySelectorAll('input, select');
+        inputs.forEach(inp => inp.addEventListener('input', calculate));
+
+        const palletCheckbox = document.getElementById('palletizingCheckbox');
+        palletCheckbox.addEventListener('change', handlePalletizingCheckbox);
+
+        const volumeInput = document.getElementById('volume');
+        volumeInput?.addEventListener('input', () => {
+            if (palletCheckbox.checked && currentDir === "blg") {
+                const cargoType = document.getElementById('cargoType').value;
+                if (cargoType === 'auto_collect') {
+                    const vol = parseFloat(volumeInput.value) || 0;
+                    const palletsInput = document.getElementById('palletsCount');
+                    if ((parseFloat(palletsInput.value) || 0) === 0 && vol > 0) {
+                        palletsInput.value = getRecommendedPallets(vol);
+                        calculate();
+                    }
+                }
+            }
+            calculate();
+        });
+
+        const cargoTypeSelect = document.getElementById('cargoType');
+        cargoTypeSelect.addEventListener('change', () => {
+            toggleCargoFields();
+            calculate();
+        });
+        calculate();
+    };
+</script>
+</body>
+</html>
