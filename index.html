@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Калькулятор грузоперевозок | Омега Холдинг</title>
+    <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=tBey6GW-APSzJmurrTpsaKVEUZqkmjtxogyIiyGohUazKDt8_xHF1q_dASqo5DOG7K1y-MDyz7iKzj_ddIApjL1OZBllHNn8dwLp-HyTMk5z5a6rK3eBpnyx-fwdsjmzTk9eGcqQF_e1oCLZ8mnJVSbwNHu2-TjGgSnh4Bdm0xHY_gRyzEWaBkUyVQeuarkw8XpeQSW8Aouipp6rZNVC4nSSRWWq4IUoJlO_Btj8iVVWKp2Jf-caXYESqu_JH-bMtPW4nXxP5Tm84h0phvrwuudgd8k2A4gXwX6lzThs0hN8FoNveEGanrp0vrb476GbAtaZvwe14h_Jr2u6PHSCMw" charset="UTF-8"></script>
     <style>
         * {
             margin: 0;
@@ -14,7 +15,7 @@
         body {
             background: linear-gradient(135deg, #eef2f7 0%, #d9e0e8 100%);
             font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            padding: 2rem 1rem;
+            padding: 1rem;
             color: #1e2f3c;
         }
 
@@ -27,14 +28,14 @@
             background: #ffffffcc;
             backdrop-filter: blur(8px);
             border-radius: 2rem;
-            padding: 1.5rem 2rem;
-            margin-bottom: 2rem;
+            padding: 1.5rem 1.5rem;
+            margin-bottom: 1.5rem;
             box-shadow: 0 12px 28px rgba(0,0,0,0.08);
             border: 1px solid rgba(255,255,255,0.7);
         }
 
         .company-name {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 800;
             background: linear-gradient(145deg, #1f5e8e, #0d3b55);
             background-clip: text;
@@ -48,6 +49,19 @@
             border-left: 4px solid #f5b042;
             padding-left: 1rem;
             font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .rate-note {
+            margin-top: 0.6rem;
+            padding: 0.3rem 1rem;
+            background: #fef5e8;
+            border-radius: 40px;
+            display: inline-block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #b06d1a;
+            border: 1px solid #f5b042;
         }
 
         .direction-switch {
@@ -55,20 +69,26 @@
             border-radius: 60px;
             display: inline-flex;
             padding: 0.3rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             box-shadow: inset 0 1px 2px #00000010, 0 2px 5px #ffffffb3;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
         }
 
         .dir-btn {
             border: none;
             background: transparent;
-            padding: 0.7rem 1.8rem;
+            padding: 0.7rem 1.2rem;
             font-size: 1rem;
             font-weight: 600;
             border-radius: 40px;
             cursor: pointer;
             transition: 0.2s;
             color: #1f5e8e;
+            flex: 1 1 auto;
+            min-width: 120px;
+            text-align: center;
         }
 
         .dir-btn.active {
@@ -79,43 +99,44 @@
 
         .calc-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
         }
 
         .form-panel, .result-panel {
             background: white;
             border-radius: 2rem;
-            padding: 1.6rem;
+            padding: 1.5rem 1.2rem;
             box-shadow: 0 20px 35px -12px rgba(0,0,0,0.15);
         }
 
         h3 {
-            font-size: 1.4rem;
-            margin-bottom: 1.2rem;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
             color: #0d3b55;
             border-left: 5px solid #f5b042;
             padding-left: 0.8rem;
         }
 
         .form-row {
-            margin-bottom: 1rem;
+            margin-bottom: 0.9rem;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
 
         .form-row label {
-            width: 200px;
+            width: 180px;
             font-weight: 600;
             color: #1f5e8e;
+            font-size: 0.95rem;
         }
 
         select, input {
             flex: 1;
-            min-width: 180px;
-            padding: 0.6rem 1rem;
+            min-width: 150px;
+            padding: 0.6rem 0.9rem;
             border-radius: 48px;
             border: 1px solid #cbdbe6;
             background: #fefefe;
@@ -142,7 +163,7 @@
             display: flex;
             align-items: center;
             gap: 0.8rem;
-            margin: 1rem 0;
+            margin: 0.8rem 0;
         }
 
         .checkbox-row input {
@@ -174,23 +195,23 @@
         .result-card {
             background: #f8fafd;
             border-radius: 1.5rem;
-            padding: 1.2rem;
-            margin-bottom: 1.2rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
         }
 
         .result-line {
             display: flex;
             justify-content: space-between;
-            padding: 0.6rem 0;
+            padding: 0.5rem 0;
             border-bottom: 1px solid #e2e8f0;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
         .result-line.total {
             border-bottom: none;
             margin-top: 0.5rem;
             font-weight: 800;
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             color: #1f5e8e;
             background: #eef3fc;
             padding: 0.8rem 1rem;
@@ -224,14 +245,56 @@
             padding-top: 0.8rem;
         }
 
+        details {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 0.4rem 0.6rem;
+            background: #f8fafd;
+            margin-bottom: 0.5rem;
+        }
+        details summary {
+            cursor: pointer;
+            font-weight: 600;
+            color: #1f5e8e;
+            outline: none;
+            font-size: 0.95rem;
+        }
+        details[open] summary {
+            margin-bottom: 0.2rem;
+        }
+        details ul {
+            padding-left: 1.2rem;
+            margin-top: 0.3rem;
+            font-size: 0.85rem;
+            list-style-type: disc;
+            color: #2c3e50;
+        }
+
         @media (max-width: 780px) {
-            .form-row label {
-                width: 100%;
-            }
-            .direction-switch {
-                width: 100%;
-                justify-content: center;
-            }
+            body { padding: 0.8rem; }
+            .company-card { padding: 1rem; }
+            .company-name { font-size: 1.3rem; }
+            .company-tagline { font-size: 0.85rem; }
+            .form-row label { width: 100%; }
+            .form-row { flex-direction: column; align-items: stretch; }
+            select, input { min-width: 100%; }
+            .dir-btn { font-size: 0.9rem; padding: 0.5rem 0.8rem; min-width: 80px; }
+            .calc-grid { grid-template-columns: 1fr; gap: 1rem; }
+            .form-panel, .result-panel { padding: 1rem; }
+            h3 { font-size: 1.1rem; }
+            .result-line { font-size: 0.9rem; }
+            .result-line.total { font-size: 1.2rem; }
+            button.calc-btn { font-size: 1rem; padding: 0.8rem; }
+            details summary { font-size: 0.9rem; }
+            details ul { font-size: 0.8rem; }
+        }
+
+        @media (max-width: 480px) {
+            .company-name { font-size: 1.1rem; }
+            .dir-btn { font-size: 0.8rem; padding: 0.4rem 0.6rem; min-width: 60px; }
+            .result-line { font-size: 0.8rem; }
+            .result-line.total { font-size: 1rem; }
+            .note { font-size: 0.6rem; }
         }
     </style>
 </head>
@@ -240,7 +303,7 @@
     <div class="company-card">
         <div class="company-name">Группа компаний "Омега Холдинг"</div>
         <div class="company-tagline">Международные грузоперевозки Китай – Россия | Полный цикл, таможня, доставка до двери</div>
-        <div style="margin-top: 0.6rem; font-size:0.85rem;">📍 Работаем через Хэйхэ/Благовещенск и Маньчжурию/Забайкальск</div>
+        <div class="rate-note">📅 Актуальные ставки до 15.07</div>
     </div>
 
     <div class="direction-switch" id="directionSwitch">
@@ -295,15 +358,10 @@
                     </div>
                 </div>
 
-                <!-- Количество паллет (видимо всегда) -->
+                <!-- Количество паллет -->
                 <div class="form-row">
                     <label>Количество паллет (шт)</label>
                     <input type="number" id="palletsCount" step="1" value="0">
-                </div>
-
-                <div class="checkbox-row">
-                    <input type="checkbox" id="palletizingCheckbox">
-                    <label for="palletizingCheckbox" style="width: auto;">➕ Добавить паллетирование (1 паллета = 2 250 ₽)</label>
                 </div>
 
                 <div class="form-row">
@@ -316,12 +374,25 @@
                     <input type="number" id="cargoValue" step="1000" value="0">
                 </div>
 
+                <!-- Чекбоксы (скрываются для выделенного авто) -->
+                <div id="checkboxContainer">
+                    <div class="checkbox-row" id="palletCheckboxRow">
+                        <input type="checkbox" id="palletizingCheckbox">
+                        <label for="palletizingCheckbox" style="width: auto;">➕ Добавить паллетирование (1 паллета = 2 250 ₽)</label>
+                    </div>
+
+                    <div class="checkbox-row" id="brandCheckboxRow">
+                        <input type="checkbox" id="brandCheckbox">
+                        <label for="brandCheckbox" style="width: auto;">🏷️ Брендовый / Санкционный товар (+30 000 ₽)</label>
+                    </div>
+                </div>
+
                 <button type="button" class="calc-btn" id="discountBtn">🎁 ПОЛУЧИТЬ СКИДКУ</button>
             </form>
             <div class="note">
                 * Паллетирование добавляется по желанию (цена за 1 паллету). При активации чекбокса для автосборки автоматически подставится рекомендуемое кол-во паллет (Объём/1.6 м³).<br>
                 Страхование 0,04% от объявленной стоимости груза включается в итог.<br>
-                Адресная доставка уже включена в ставку по РФ.
+                Адресная доставка уже включена в ставку по РФ (кроме выделенного авто).
             </div>
         </div>
 
@@ -335,10 +406,42 @@
                     <div class="result-line"><span>📄 Доп. пакеты документов:</span><span id="docsCost">0 ₽</span></div>
                     <div class="result-line"><span>📦 Паллетирование (вкл. по желанию):</span><span id="palletCost">0 ₽</span></div>
                     <div class="result-line"><span>🛡️ Страхование (0.04% от стоимости):</span><span id="insuranceCost">0 ₽</span></div>
+                    <div class="result-line"><span>🏷️ Брендовый/санкционный товар:</span><span id="brandCost">0 ₽</span></div>
                     <div class="result-line total"><span>ИТОГО К ОПЛАТЕ:</span><span id="totalCost">0 ₽</span></div>
                 </div>
                 <div class="result-card">
                     <div class="result-line"><span>🏭 Плановые расходы СВХ (ориентир):</span><span id="svhCost">0 ₽</span></div>
+                </div>
+
+                <!-- Блок транзитного срока и услуг -->
+                <div class="result-card" id="transitServicesCard">
+                    <div class="result-line" style="font-weight: bold; font-size: 1.2rem; border-bottom: 2px solid #f5b042;">
+                        <span>🚚 Транзитный срок:</span>
+                        <span id="transitTime" style="color: #f5b042;">—</span>
+                    </div>
+                    <details>
+                        <summary>📋 В ставку включено</summary>
+                        <ul>
+                            <li>Забор груза с фабрики в Китае;</li>
+                            <li>Расходы по приему груза;</li>
+                            <li>Погрузка/выгрузка на складе консолидации;</li>
+                            <li>Хранение груза на складе консолидации в Китае;</li>
+                            <li>Оформление экспортной декларации;</li>
+                            <li>Взвешивание груза;</li>
+                            <li>Проверка и корректировка одного пакета сопроводительных документов;</li>
+                            <li>Простой автомобиля при таможенных операциях 3 календарных дня, далее 25000 рублей/сутки;</li>
+                            <li>Доставка до адреса в городе назначения.</li>
+                        </ul>
+                    </details>
+                    <details>
+                        <summary>❌ В ставку не включено</summary>
+                        <ul>
+                            <li>Расходы СВХ, перевыставляются зеркально после проведения ТО;</li>
+                            <li>Таможенное оформление на границе;</li>
+                            <li>Условия оплаты: 50% при размещении груза на СВХ / 50% за 3 дня до прибытия;</li>
+                            <li>Страхование груза 0,04%.</li>
+                        </ul>
+                    </details>
                 </div>
             </div>
             <div id="contactBlock" class="contact-block">
@@ -354,20 +457,37 @@
 
 <script>
     // --------------------------------------------------------------
-    // ОБНОВЛЁННЫЕ ПРАЙСЫ
+    // ОБНОВЛЁННЫЕ СТАВКИ (Хэйхэ / Благовещенск)
     // --------------------------------------------------------------
 
-    // Благовещенск
+    // Китай
     const priceChinaBlg = {
-        "Хэйхэ": 244000, "Харбин": 306400, "Чанчунь": 318400, "Шэньян": 331600,
-        "Далянь": 391600, "Пекин": 348400, "Тяньцзинь": 385600, "Циндао": 378400,
-        "Цзинань": 388000, "Шицзячжуан": 389200, "Тайюань": 448000, "Нанкин": 418000,
-        "Шанхай": 431200, "Ухань": 424000, "Ханчжоу": 472000, "Вэньчжоу": 460000,
-        "Нинбо": 420400, "Сиань": 442000, "Наньчан": 457600, "Чэнду": 490000,
-        "Сямэнь": 466000, "Чунцин": 449200, "Гуаньчжоу": 474400
+        "Хэйхэ": 224000,
+        "Харбин": 286400,
+        "Чанчунь": 298400,
+        "Шэньян": 311600,
+        "Далянь": 371600,
+        "Пекин": 328400,
+        "Тяньцзинь": 365600,
+        "Циндао": 358400,
+        "Цзинань": 368000,
+        "Шицзячжуан": 369200,
+        "Тайюань": 428000,
+        "Нанкин": 398000,
+        "Шанхай": 411200,
+        "Ухань": 404000,
+        "Ханчжоу": 452000,
+        "Вэньчжоу": 440000,
+        "Нинбо": 400400,
+        "Сиань": 422000,
+        "Наньчан": 437600,
+        "Чэнду": 470000,
+        "Сямэнь": 446000,
+        "Чунцин": 429200,
+        "Гуаньчжоу": 454400
     };
 
-    // Маньчжурия
+    // Маньчжурия (без изменений)
     const priceChinaMnchRaw = {
         "Manzhouli (Маньчжурия)": 202100,
         "Harbin (Харбин)": 240500,
@@ -401,38 +521,105 @@
         return { display, key, value };
     });
 
-    // РФ для Благовещенска
+    // РФ для Благовещенска (новые ставки, адресная надбавка восстановлена)
     const priceRfBlg = {
-        "Благовещенск": 140000, "Хабаровск": 240000, "Свободный": 205000, "Комсомольск-на-Амуре": 240000,
-        "Иркутск": 390000, "Красноярск": 505000, "Кемерово": 490000, "Усть-Кут": 540000,
-        "Омск": 520000, "Тюмень": 540000, "Екатеринбург": 570000, "Челябинск": 570000,
-        "Пермь": 570000, "Казань": 620000, "Самара": 620000, "Тольятти": 620000,
-        "Уфа": 620000, "Набережные Челны": 620000, "Саратов": 620000, "Ульяновск": 670000,
-        "Ижевск": 670000, "Москва": 670000, "Санкт-Петербург": 690000
+        "Благовещенск": 100000,
+        "Хабаровск": 100000,
+        "Свободный": 100000,
+        "Комсомольск-на-Амуре": 210000,
+        "Иркутск": 360000,
+        "Красноярск": 410000,
+        "Кемерово": 460000,
+        "Усть-Кут": 460000,
+        "Омск": 460000,
+        "Тюмень": 490000,
+        "Екатеринбург": 510000,
+        "Челябинск": 540000,
+        "Пермь": 540000,
+        "Казань": 560000,
+        "Самара": 590000,
+        "Тольятти": 590000,
+        "Уфа": 590000,
+        "Набережные Челны": 560000,
+        "Саратов": 590000,
+        "Ульяновск": 640000,
+        "Ижевск": 640000,
+        "Воронеж": 640000,
+        "Нижний Новгород": 640000,
+        "Москва": 640000,
+        "Санкт-Петербург": 640000
     };
+    // Адресные надбавки для Благовещенска (восстановлены)
     const addressBlg = {
-        "Благовещенск": 10000, "Хабаровск": 50000, "Свободный": 10000, "Комсомольск-на-Амуре": 100000,
-        "Иркутск": 20000, "Красноярск": 20000, "Кемерово": 20000, "Усть-Кут": 10000,
-        "Омск": 20000, "Тюмень": 10000, "Екатеринбург": 10000, "Челябинск": 10000,
-        "Пермь": 15000, "Казань": 10000, "Самара": 20000, "Тольятти": 25000,
-        "Уфа": 30000, "Набережные Челны": 30000, "Саратов": 30000, "Ульяновск": 30000,
-        "Ижевск": 35000, "Москва": 30000, "Санкт-Петербург": 30000
+        "Благовещенск": 10000,
+        "Хабаровск": 50000,
+        "Свободный": 10000,
+        "Комсомольск-на-Амуре": 100000,
+        "Иркутск": 20000,
+        "Красноярск": 20000,
+        "Кемерово": 20000,
+        "Усть-Кут": 10000,
+        "Омск": 20000,
+        "Тюмень": 10000,
+        "Екатеринбург": 10000,
+        "Челябинск": 10000,
+        "Пермь": 15000,
+        "Казань": 10000,
+        "Самара": 20000,
+        "Тольятти": 25000,
+        "Уфа": 30000,
+        "Набережные Челны": 30000,
+        "Саратов": 30000,
+        "Ульяновск": 30000,
+        "Ижевск": 35000,
+        "Москва": 30000,
+        "Санкт-Петербург": 30000
     };
 
-    // РФ для Маньчжурии
+    // РФ для Маньчжурии (без изменений, адресные надбавки восстановлены)
     const priceRfMnch = {
-        "Забайкальск": 215000, "Иркутск": 270000, "Красноярск": 340000, "Кемерово": 400000,
-        "Омск": 470000, "Тюмень": 490000, "Екатеринбург": 490000, "Челябинск": 490000,
-        "Пермь": 540000, "Уфа": 540000, "Казань": 540000, "Самара": 540000,
-        "Тольятти": 540000, "Набережные Челны": 540000, "Ульяновск": 590000, "Саратов": 590000,
-        "Нижний Новгород": 590000, "Москва": 640000, "Воронеж": 640000, "Санкт-Петербург": 640000
+        "Забайкальск": 215000,
+        "Иркутск": 270000,
+        "Красноярск": 340000,
+        "Кемерово": 400000,
+        "Омск": 470000,
+        "Тюмень": 490000,
+        "Екатеринбург": 490000,
+        "Челябинск": 490000,
+        "Пермь": 540000,
+        "Уфа": 540000,
+        "Казань": 540000,
+        "Самара": 540000,
+        "Тольятти": 540000,
+        "Набережные Челны": 540000,
+        "Ульяновск": 590000,
+        "Саратов": 590000,
+        "Нижний Новгород": 590000,
+        "Москва": 640000,
+        "Воронеж": 640000,
+        "Санкт-Петербург": 640000
     };
     const addressMnch = {
-        "Забайкальск": 10000, "Иркутск": 10000, "Красноярск": 10000, "Кемерово": 10000,
-        "Омск": 10000, "Тюмень": 10000, "Екатеринбург": 10000, "Челябинск": 10000,
-        "Пермь": 20000, "Уфа": 20000, "Казань": 20000, "Самара": 20000,
-        "Тольятти": 20000, "Набережные Челны": 20000, "Ульяновск": 30000, "Саратов": 30000,
-        "Нижний Новгород": 30000, "Москва": 30000, "Воронеж": 30000, "Санкт-Петербург": 35000
+        "Забайкальск": 10000,
+        "Иркутск": 10000,
+        "Красноярск": 10000,
+        "Кемерово": 10000,
+        "Омск": 10000,
+        "Тюмень": 10000,
+        "Екатеринбург": 10000,
+        "Челябинск": 10000,
+        "Пермь": 20000,
+        "Уфа": 20000,
+        "Казань": 20000,
+        "Самара": 20000,
+        "Тольятти": 20000,
+        "Набережные Челны": 20000,
+        "Ульяновск": 30000,
+        "Саратов": 30000,
+        "Нижний Новгород": 30000,
+        "Москва": 30000,
+        "Воронеж": 30000,
+        "Санкт-Петербург": 35000
     };
 
     let currentDir = "blg";
@@ -480,9 +667,25 @@
         return Math.ceil(volume / 1.6);
     }
 
+    // Управление видимостью чекбоксов (паллетирование и брендовый)
+    function updateCheckboxesVisibility() {
+        const cargoType = document.getElementById('cargoType').value;
+        const palletRow = document.getElementById('palletCheckboxRow');
+        const brandRow = document.getElementById('brandCheckboxRow');
+        if (cargoType === 'dedicated') {
+            palletRow.classList.add('hidden');
+            brandRow.classList.add('hidden');
+        } else {
+            palletRow.classList.remove('hidden');
+            brandRow.classList.remove('hidden');
+        }
+    }
+
     function toggleCargoFields() {
         if (currentDir === "mnch") {
             document.getElementById('cargoFieldsBlock').classList.add('hidden');
+            document.getElementById('cargoType').value = 'auto_collect';
+            updateCheckboxesVisibility();
             return;
         }
         const cargoType = document.getElementById('cargoType').value;
@@ -492,6 +695,7 @@
         } else {
             cargoFields.classList.remove('hidden');
         }
+        updateCheckboxesVisibility();
     }
 
     function handlePalletizingCheckbox() {
@@ -520,6 +724,7 @@
         const palletCheck = document.getElementById('palletizingCheckbox').checked;
         let palletsQty = parseFloat(document.getElementById('palletsCount').value) || 0;
         const cargoValue = parseFloat(document.getElementById('cargoValue').value) || 0;
+        const brandSurcharge = document.getElementById('brandCheckbox').checked ? 30000 : 0;
 
         let volume = 0, weight = 0, maxLength = 0, maxWidth = 0, floorLength = 0;
         if (currentDir === "blg") {
@@ -543,11 +748,14 @@
         }
 
         const chinaBase = getChinaRate(originCityDisplay, currentDir);
-        // ------------------- ИЗМЕНЕНИЕ: +10200 к ставке по Китаю -------------------
         const chinaTotal = chinaBase * calcCoef + 10200;
 
         const rfBase = getRfBase(destCity, currentDir);
-        const address = getAddress(destCity, currentDir);
+        // Адресная надбавка добавляется ТОЛЬКО для сборных грузов (не для выделенного авто)
+        let address = 0;
+        if (cargoType !== 'dedicated') {
+            address = getAddress(destCity, currentDir);
+        }
         let rfTotal = rfBase * calcCoef;
         if (rfTotal < 10000) rfTotal = 10000 + address;
         else rfTotal = rfTotal + address;
@@ -559,7 +767,7 @@
         }
 
         const insurance = cargoValue * 0.0004;
-        let total = chinaTotal + rfTotal + docsCost + palletCost + insurance;
+        let total = chinaTotal + rfTotal + docsCost + palletCost + insurance + brandSurcharge;
         let svh = calcCoef * 30000;
 
         document.getElementById('chinaRate').innerHTML = Math.round(chinaTotal).toLocaleString() + ' ₽';
@@ -567,8 +775,23 @@
         document.getElementById('docsCost').innerHTML = Math.round(docsCost).toLocaleString() + ' ₽';
         document.getElementById('palletCost').innerHTML = Math.round(palletCost).toLocaleString() + ' ₽';
         document.getElementById('insuranceCost').innerHTML = Math.round(insurance).toLocaleString() + ' ₽';
+        document.getElementById('brandCost').innerHTML = Math.round(brandSurcharge).toLocaleString() + ' ₽';
         document.getElementById('totalCost').innerHTML = Math.round(total).toLocaleString() + ' ₽';
         document.getElementById('svhCost').innerHTML = Math.round(svh).toLocaleString() + ' ₽';
+
+        // Транзитный срок
+        const transitElement = document.getElementById('transitTime');
+        let transitText = '';
+        if (currentDir === 'mnch') {
+            transitText = '30–40 дней';
+        } else {
+            if (cargoType === 'dedicated') {
+                transitText = '15–20 дней';
+            } else {
+                transitText = '25–30 дней';
+            }
+        }
+        transitElement.textContent = transitText;
     }
 
     function updateUIForDirection() {
@@ -579,10 +802,13 @@
         if (currentDir === "mnch") {
             cargoTypeWrapper.classList.add('hidden');
             cargoFieldsBlock.classList.add('hidden');
+            cargoTypeSelect.value = 'auto_collect';
         } else {
             cargoTypeWrapper.classList.remove('hidden');
             toggleCargoFields();
         }
+
+        updateCheckboxesVisibility();
 
         const originSelect = document.getElementById('originCity');
         const destSelect = document.getElementById('destCity');
@@ -645,6 +871,9 @@
         const palletCheckbox = document.getElementById('palletizingCheckbox');
         palletCheckbox.addEventListener('change', handlePalletizingCheckbox);
 
+        const brandCheckbox = document.getElementById('brandCheckbox');
+        brandCheckbox.addEventListener('change', calculate);
+
         const volumeInput = document.getElementById('volume');
         volumeInput?.addEventListener('input', () => {
             if (palletCheckbox.checked && currentDir === "blg") {
@@ -664,6 +893,7 @@
         const cargoTypeSelect = document.getElementById('cargoType');
         cargoTypeSelect.addEventListener('change', () => {
             toggleCargoFields();
+            updateCheckboxesVisibility();
             calculate();
         });
         calculate();
